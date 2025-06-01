@@ -8,19 +8,21 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --build && tsc --noEmit",
     "clean": "rm -rf .next"
   },
   "dependencies": {
     "@tanstack/react-query": "5.62.7",
+    "@template/server": "*",
     "@trpc/client": "11.0.1",
-    "@trpc/next": "11.0.1",
+    "@trpc/react-query": "^11.1.4",
     "@trpc/server": "11.0.1",
     "autoprefixer": "10.4.20",
     "next": "15.2.2",
     "postcss": "8.5.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "superjson": "^2.2.2",
     "tailwindcss": "4.1.8",
     "zod": "3.24.1"
   },

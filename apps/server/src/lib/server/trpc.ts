@@ -2,8 +2,11 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import type { AppContext } from "../context/appContext.js";
 import { AppError } from "../error/appError.js";
 import { UsecaseError } from "../usecase/types.js";
+import superjson from "superjson";
 
-const t = initTRPC.context<AppContext>().create();
+const t = initTRPC.context<AppContext>().create({
+  transformer: superjson
+});
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
