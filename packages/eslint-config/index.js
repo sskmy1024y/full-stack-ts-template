@@ -45,6 +45,23 @@ export const node = [
       'no-console': 'warn',
     },
   },
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "caughtErrorsIgnorePattern": "^_",
+          "destructuredArrayIgnorePattern": "^_"
+        }
+      ],
+      "@typescript-eslint/no-floating-promises": ["warn", {"ignoreIIFE": true}],
+      "@typescript-eslint/no-misused-promises": "warn",
+      // v9対応の際に一旦warnに変更
+      "@typescript-eslint/no-unused-expressions": "warn",
+    }
+  }
 ];
 
 export const react = [
