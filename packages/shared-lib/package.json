@@ -1,0 +1,25 @@
+{
+  "name": "@template/shared-lib",
+  "version": "1.0.0",
+  "description": "Shared library with types, validations and utilities",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "@template/eslint-config": "workspace:*",
+    "@template/tsconfig": "workspace:*",
+    "eslint": "9.17.0",
+    "typescript": "5.7.2"
+  }
+}

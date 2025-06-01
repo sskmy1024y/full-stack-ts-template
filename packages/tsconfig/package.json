@@ -1,0 +1,9 @@
+{
+  "name": "@template/tsconfig",
+  "version": "1.0.0",
+  "description": "Shared TypeScript configurations",
+  "private": true,
+  "files": [
+    "*.json"
+  ]
+}
