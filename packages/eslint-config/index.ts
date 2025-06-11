@@ -1,26 +1,24 @@
-import js from '@eslint/js';
-import typescript from '@typescript-eslint/eslint-plugin';
-import typescriptParser from '@typescript-eslint/parser';
-import prettier from 'eslint-plugin-prettier';
-import prettierConfig from 'eslint-config-prettier';
+import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import prettierConfig from 'eslint-config-prettier'
 
 export const base = [
   js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      parser: typescriptParser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
-    },
-    plugins: {
-      '@typescript-eslint': typescript,
-      prettier,
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+      },
     },
     rules: {
-      'prettier/prettier': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -34,8 +32,8 @@ export const base = [
       '@typescript-eslint/no-var-requires': 'off',
     },
   },
-  prettierConfig,
-];
+  prettierConfig as any,
+]
 
 export const node = [
   ...base,
@@ -47,22 +45,20 @@ export const node = [
   },
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
         {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_",
-          "destructuredArrayIgnorePattern": "^_"
-        }
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+        },
       ],
-      "@typescript-eslint/no-floating-promises": ["warn", {"ignoreIIFE": true}],
-      "@typescript-eslint/no-misused-promises": "warn",
       // v9対応の際に一旦warnに変更
-      "@typescript-eslint/no-unused-expressions": "warn",
-    }
-  }
-];
+      '@typescript-eslint/no-unused-expressions': 'warn',
+    },
+  },
+]
 
 export const react = [
   ...base,
@@ -80,6 +76,6 @@ export const react = [
       'react/prop-types': 'off', // Using TypeScript
     },
   },
-];
+]
 
-export default base;
+export default base

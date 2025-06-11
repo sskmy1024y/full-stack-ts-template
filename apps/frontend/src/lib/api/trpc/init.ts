@@ -1,5 +1,5 @@
-import { initTRPC } from "@trpc/server";
-import superjson from "superjson";
+import { initTRPC } from '@trpc/server'
+import superjson from 'superjson'
 
 // Avoid exporting the entire t-object
 // since it's not very descriptive.
@@ -10,9 +10,9 @@ const t = initTRPC.create({
    * @see https://trpc.io/docs/server/data-transformers
    */
   transformer: superjson,
-});
+})
 // Base router and procedure helpers
 
-export const createTRPCRouter = t.router;
-export const createCallerFactory = t.createCallerFactory;
-export const baseProcedure = t.procedure;
+export const createTRPCRouter = t.router
+export const createCallerFactory = t.createCallerFactory
+export const baseProcedure = t.procedure

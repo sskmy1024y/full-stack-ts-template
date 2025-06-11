@@ -1,33 +1,33 @@
-"use client";
+'use client'
 
-import { useState, FormEvent } from "react";
-import { trpc } from "@/lib/api/trpc/client";
-import Link from "next/link";
+import { useState, FormEvent } from 'react'
+import { trpc } from '@/lib/api/trpc/client'
+import Link from 'next/link'
 
 export default function HomePage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loginResult, setLoginResult] = useState<
     { id: string; email: string } | { error: string } | null
-  >(null);
+  >(null)
 
   const loginMutation = trpc.user.login.useMutation({
     onSuccess: (data) => {
-      setLoginResult(data);
+      setLoginResult(data)
       // eslint-disable-next-line no-undef
-      console.log("Login successful:", data);
+      console.log('Login successful:', data)
     },
     onError: (error) => {
-      setLoginResult({ error: error.message });
+      setLoginResult({ error: error.message })
       // eslint-disable-next-line no-undef
-      console.error("Login failed:", error);
+      console.error('Login failed:', error)
     },
-  });
+  })
 
   const handleLogin = async (e: FormEvent) => {
-    e.preventDefault();
-    loginMutation.mutate({ email, password });
-  };
+    e.preventDefault()
+    loginMutation.mutate({ email, password })
+  }
 
   return (
     <div className="min-h-screen relative bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center p-4">
@@ -61,9 +61,7 @@ export default function HomePage() {
             <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
               Welcome Back
             </h1>
-            <p className="text-gray-600 mt-2">
-              Sign in to continue to your dashboard
-            </p>
+            <p className="text-gray-600 mt-2">Sign in to continue to your dashboard</p>
           </div>
 
           {/* Form */}
@@ -173,12 +171,7 @@ export default function HomePage() {
               ) : (
                 <>
                   <span>Sign In</span>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -211,12 +204,7 @@ export default function HomePage() {
             className="w-full flex items-center justify-center py-3 px-6 border-2 border-gray-300/50 hover:border-indigo-500/50 text-gray-700 hover:text-indigo-600 font-medium rounded-2xl transition-all duration-200 hover:bg-white/50 space-x-2"
           >
             <span>Create new account</span>
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -229,15 +217,11 @@ export default function HomePage() {
           {/* Result Messages */}
           {loginResult && (
             <div className="mt-6 animate-fadeIn">
-              {"error" in loginResult ? (
+              {'error' in loginResult ? (
                 <div className="backdrop-blur-sm bg-red-50/80 border border-red-200/50 rounded-2xl p-4">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <svg
-                        className="h-5 w-5 text-red-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
+                      <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
                         <path
                           fillRule="evenodd"
                           d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -246,12 +230,8 @@ export default function HomePage() {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-sm font-medium text-red-800">
-                        Login failed
-                      </h3>
-                      <div className="mt-1 text-sm text-red-700">
-                        {loginResult.error}
-                      </div>
+                      <h3 className="text-sm font-medium text-red-800">Login failed</h3>
+                      <div className="mt-1 text-sm text-red-700">{loginResult.error}</div>
                     </div>
                   </div>
                 </div>
@@ -272,9 +252,7 @@ export default function HomePage() {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-sm font-medium text-green-800">
-                        Welcome back!
-                      </h3>
+                      <h3 className="text-sm font-medium text-green-800">Welcome back!</h3>
                       <div className="mt-1 text-sm text-green-700">
                         Successfully signed in as {loginResult.email}
                       </div>
@@ -287,5 +265,5 @@ export default function HomePage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

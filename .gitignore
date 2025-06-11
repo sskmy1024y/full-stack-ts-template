@@ -172,7 +172,6 @@ web-build/
 logs/
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
