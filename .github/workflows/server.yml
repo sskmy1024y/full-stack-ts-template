@@ -6,17 +6,13 @@ on:
     paths:
       - 'apps/server/**'
       - 'packages/**'
-      - '.github/workflows/server.yml'
       - 'package.json'
-      - 'yarn.lock'
   pull_request:
     branches: [main, develop]
     paths:
       - 'apps/server/**'
       - 'packages/**'
-      - '.github/workflows/server.yml'
       - 'package.json'
-      - 'yarn.lock'
 
 env:
   NODE_VERSION: '20.x'
@@ -24,8 +20,13 @@ env:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      node-modules-key: ${{ steps.cache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v4
+      - name: Generate cache key
+        id: cache-key
+        run: echo "key=${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}" >> $GITHUB_OUTPUT
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -33,6 +34,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Cache yarn dependencies
+        id: cache
         uses: actions/cache@v4
         with:
           path: ~/.yarn/cache
@@ -41,6 +43,16 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --immutable
+      - name: Build eslint-config
+        run: cd packages/eslint-config && yarn build
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+            apps/*/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
   lint-and-format:
     runs-on: ubuntu-latest
@@ -53,15 +65,21 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: Enable Corepack
         run: corepack enable
-      - name: Cache yarn dependencies
+      - name: Restore node_modules cache
         uses: actions/cache@v4
         with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            node_modules
+            packages/*/node_modules
+            apps/*/node_modules
+          key: ${{ needs.setup.outputs.node-modules-key }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install --immutable
+            ${{ runner.os }}-node-modules-
+      - name: Install dependencies if cache miss
+        run: |
+          if [ ! -d "node_modules" ]; then
+            yarn install --immutable
+          fi
       - name: Build eslint-config
         run: cd packages/eslint-config && yarn build
       - name: Run ESLint
@@ -82,15 +100,21 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: Enable Corepack
         run: corepack enable
-      - name: Cache yarn dependencies
+      - name: Restore node_modules cache
         uses: actions/cache@v4
         with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            node_modules
+            packages/*/node_modules
+            apps/*/node_modules
+          key: ${{ needs.setup.outputs.node-modules-key }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install --immutable
+            ${{ runner.os }}-node-modules-
+      - name: Install dependencies if cache miss
+        run: |
+          if [ ! -d "node_modules" ]; then
+            yarn install --immutable
+          fi
       - name: Build eslint-config
         run: cd packages/eslint-config && yarn build
       - name: Run TypeScript type checking
@@ -108,15 +132,21 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: Enable Corepack
         run: corepack enable
-      - name: Cache yarn dependencies
+      - name: Restore node_modules cache
         uses: actions/cache@v4
         with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            node_modules
+            packages/*/node_modules
+            apps/*/node_modules
+          key: ${{ needs.setup.outputs.node-modules-key }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install --immutable
+            ${{ runner.os }}-node-modules-
+      - name: Install dependencies if cache miss
+        run: |
+          if [ ! -d "node_modules" ]; then
+            yarn install --immutable
+          fi
       - name: Build eslint-config
         run: cd packages/eslint-config && yarn build
       - name: Run tests

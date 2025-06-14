@@ -1,5 +1,5 @@
-import { newPrismaClient } from "../prisma/client.js";
+import { newPrismaClient } from '../prisma/client.js'
 
-export const prisma = newPrismaClient();
+export const prisma = newPrismaClient()
 
-export type PrismaCleint = typeof prisma;
+export type PrismaCleint = typeof prisma
