@@ -1,3 +1,3 @@
-import { react } from '@template/eslint-config';
+import { react } from '@template/eslint-config'
 
-export default react;
+export default react

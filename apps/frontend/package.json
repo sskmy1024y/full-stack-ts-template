@@ -42,7 +42,6 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/eslint-plugin-tailwindcss": "3.17.0",
-    "@types/jest": "^29.5.14",
     "@types/node": "22.10.2",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
@@ -51,11 +50,8 @@
     "eslint-config-next": "15.1.4",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-tailwindcss": "^3.18.0",
-    "jest": "^30.0.0",
-    "jest-environment-jsdom": "^30.0.0",
     "jsdom": "^26.1.0",
     "prettier": "^3.5.3",
-    "ts-jest": "^29.3.4",
     "typescript": "5.7.2",
     "vitest": "^3.2.3"
   }

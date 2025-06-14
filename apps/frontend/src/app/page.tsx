@@ -14,12 +14,10 @@ export default function HomePage() {
   const loginMutation = trpc.user.login.useMutation({
     onSuccess: (data) => {
       setLoginResult(data)
-      // eslint-disable-next-line no-undef
       console.log('Login successful:', data)
     },
     onError: (error) => {
       setLoginResult({ error: error.message })
-      // eslint-disable-next-line no-undef
       console.error('Login failed:', error)
     },
   })
