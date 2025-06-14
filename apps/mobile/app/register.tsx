@@ -1,52 +1,45 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { router } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { StatusBar } from 'expo-status-bar'
 
-import { trpc } from '../lib/api/trpc/client';
+import { trpc } from '../lib/api/trpc/client'
 
 export default function RegisterScreen() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const registerMutation = trpc.user.register.useMutation({
     onSuccess: () => {
       Alert.alert('Success', 'Account created successfully! You can now sign in.', [
-        { text: 'OK', onPress: () => router.replace('/login') }
-      ]);
+        { text: 'OK', onPress: () => router.replace('/login') },
+      ])
     },
     onError: (error: any) => {
-      Alert.alert('Registration Failed', error.message);
+      Alert.alert('Registration Failed', error.message)
     },
-  });
+  })
 
   const handleRegister = () => {
     if (!name || !email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
+      Alert.alert('Error', 'Please fill in all fields')
+      return
     }
     if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long');
-      return;
+      Alert.alert('Error', 'Password must be at least 8 characters long')
+      return
     }
-    registerMutation.mutate({ name, email, password });
-  };
+    registerMutation.mutate({ name, email, password })
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-gradient-to-br from-purple-50 via-white to-pink-50">
       <StatusBar style="dark" />
-      
+
       {/* Background shapes */}
       <View className="absolute inset-0 overflow-hidden">
         <View className="absolute -top-40 -left-32 w-96 h-96 rounded-full bg-pink-400 opacity-20" />
@@ -60,12 +53,8 @@ export default function RegisterScreen() {
           <View className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-3xl items-center justify-center mb-6 shadow-lg">
             <Ionicons name="person-add" size={32} color="white" />
           </View>
-          <Text className="text-4xl font-bold text-gray-900 mb-2">
-            Join Us Today
-          </Text>
-          <Text className="text-gray-600 text-lg">
-            Create your account in seconds
-          </Text>
+          <Text className="text-4xl font-bold text-gray-900 mb-2">Join Us Today</Text>
+          <Text className="text-gray-600 text-lg">Create your account in seconds</Text>
         </View>
 
         {/* Form */}
@@ -124,7 +113,7 @@ export default function RegisterScreen() {
                 className="absolute right-4 top-4"
               >
                 <Ionicons
-                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                   size={20}
                   color="#9CA3AF"
                 />
@@ -148,15 +137,11 @@ export default function RegisterScreen() {
               {registerMutation.isPending ? (
                 <>
                   <ActivityIndicator color="white" size="small" />
-                  <Text className="text-white font-semibold text-lg ml-2">
-                    Creating account...
-                  </Text>
+                  <Text className="text-white font-semibold text-lg ml-2">Creating account...</Text>
                 </>
               ) : (
                 <>
-                  <Text className="text-white font-semibold text-lg">
-                    Create Account
-                  </Text>
+                  <Text className="text-white font-semibold text-lg">Create Account</Text>
                   <Ionicons name="add" size={20} color="white" />
                 </>
               )}
@@ -183,12 +168,10 @@ export default function RegisterScreen() {
           onPress={() => router.push('/login')}
           className="w-full flex-row items-center justify-center py-3 px-6 border-2 border-gray-300/50 rounded-2xl bg-white/50 space-x-2"
         >
-          <Text className="text-gray-700 font-medium text-lg">
-            Sign in instead
-          </Text>
+          <Text className="text-gray-700 font-medium text-lg">Sign in instead</Text>
           <Ionicons name="log-in-outline" size={20} color="#374151" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
+  )
 }

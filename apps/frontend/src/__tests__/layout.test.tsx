@@ -13,7 +13,7 @@ describe('Layout Tests', () => {
 
   it('should validate layout structure', () => {
     const layoutComponents = ['html', 'head', 'body', 'main']
-    
+
     expect(layoutComponents.length).toBe(4)
     expect(layoutComponents).toContain('html')
     expect(layoutComponents).toContain('body')

@@ -1,47 +1,40 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { router } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { StatusBar } from 'expo-status-bar'
 
-import { trpc } from '../lib/api/trpc/client';
+import { trpc } from '../lib/api/trpc/client'
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const loginMutation = trpc.user.login.useMutation({
     onSuccess: (data: any) => {
       Alert.alert('Success', `Welcome back, ${data.email}!`, [
-        { text: 'OK', onPress: () => router.replace('/(tabs)') }
-      ]);
+        { text: 'OK', onPress: () => router.replace('/(tabs)') },
+      ])
     },
     onError: (error: any) => {
-      Alert.alert('Login Failed', error.message);
+      Alert.alert('Login Failed', error.message)
     },
-  });
+  })
 
   const handleLogin = () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
+      Alert.alert('Error', 'Please fill in all fields')
+      return
     }
-    loginMutation.mutate({ email, password });
-  };
+    loginMutation.mutate({ email, password })
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
       <StatusBar style="dark" />
-      
+
       {/* Background shapes */}
       <View className="absolute inset-0 overflow-hidden">
         <View className="absolute -top-40 -right-32 w-96 h-96 rounded-full bg-purple-400 opacity-20" />
@@ -55,12 +48,8 @@ export default function LoginScreen() {
           <View className="w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl items-center justify-center mb-6 shadow-lg">
             <Ionicons name="person" size={32} color="white" />
           </View>
-          <Text className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome Back
-          </Text>
-          <Text className="text-gray-600 text-lg">
-            Sign in to continue to your dashboard
-          </Text>
+          <Text className="text-4xl font-bold text-gray-900 mb-2">Welcome Back</Text>
+          <Text className="text-gray-600 text-lg">Sign in to continue to your dashboard</Text>
         </View>
 
         {/* Form */}
@@ -101,7 +90,7 @@ export default function LoginScreen() {
                 className="absolute right-4 top-4"
               >
                 <Ionicons
-                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                   size={20}
                   color="#9CA3AF"
                 />
@@ -122,15 +111,11 @@ export default function LoginScreen() {
               {loginMutation.isPending ? (
                 <>
                   <ActivityIndicator color="white" size="small" />
-                  <Text className="text-white font-semibold text-lg ml-2">
-                    Signing in...
-                  </Text>
+                  <Text className="text-white font-semibold text-lg ml-2">Signing in...</Text>
                 </>
               ) : (
                 <>
-                  <Text className="text-white font-semibold text-lg">
-                    Sign In
-                  </Text>
+                  <Text className="text-white font-semibold text-lg">Sign In</Text>
                   <Ionicons name="arrow-forward" size={20} color="white" />
                 </>
               )}
@@ -157,12 +142,10 @@ export default function LoginScreen() {
           onPress={() => router.push('/register')}
           className="w-full flex-row items-center justify-center py-3 px-6 border-2 border-gray-300/50 rounded-2xl bg-white/50 space-x-2"
         >
-          <Text className="text-gray-700 font-medium text-lg">
-            Create new account
-          </Text>
+          <Text className="text-gray-700 font-medium text-lg">Create new account</Text>
           <Ionicons name="person-add-outline" size={20} color="#374151" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
+  )
 }

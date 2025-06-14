@@ -1,5 +1,5 @@
-import { PrismaRwContext, PrismaTxContext } from "../dao/PrismaContext.js";
+import { PrismaRwContext, PrismaTxContext } from '../dao/PrismaContext.js'
 
-export type DaoRwContext = PrismaRwContext;
+export type DaoRwContext = PrismaRwContext
 
-export type DaoTxContext = PrismaTxContext;
+export type DaoTxContext = PrismaTxContext

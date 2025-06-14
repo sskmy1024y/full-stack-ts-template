@@ -1,11 +1,11 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
+import { Image } from 'expo-image'
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native'
+import { router } from 'expo-router'
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { HelloWave } from '@/components/HelloWave'
+import ParallaxScrollView from '@/components/ParallaxScrollView'
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
 
 export default function HomeScreen() {
   return (
@@ -16,7 +16,8 @@ export default function HomeScreen() {
           source={require('@/assets/images/partial-react-logo.png')}
           style={styles.reactLogo}
         />
-      }>
+      }
+    >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
@@ -44,26 +45,23 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 3: Authentication</ThemedText>
-        <ThemedText>
-          Test the authentication screens with NativeWind styling.
-        </ThemedText>
+        <ThemedText>Test the authentication screens with NativeWind styling.</ThemedText>
         <ThemedView style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => router.push('/login')}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/login')}>
             <ThemedText style={styles.buttonText}>Go to Login</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.secondaryButton]}
             onPress={() => router.push('/register')}
           >
-            <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Go to Register</ThemedText>
+            <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>
+              Go to Register
+            </ThemedText>
           </TouchableOpacity>
         </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -107,4 +105,4 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
-});
+})

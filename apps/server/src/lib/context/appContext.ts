@@ -1,5 +1,5 @@
-import { FastifyContext } from "./fastify.js";
+import { FastifyContext } from './fastify.js'
 
-export type UsecaseContext = FastifyContext;
+export type UsecaseContext = FastifyContext
 
-export type AppContext = UsecaseContext;
+export type AppContext = UsecaseContext

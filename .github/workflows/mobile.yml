@@ -6,30 +6,27 @@ on:
     paths:
       - 'apps/mobile/**'
       - 'packages/**'
-      - '.github/workflows/mobile.yml'
       - 'package.json'
       - 'yarn.lock'
+      - '.github/workflows/mobile.yml'
   pull_request:
     branches: [main, develop]
     paths:
       - 'apps/mobile/**'
       - 'packages/**'
-      - '.github/workflows/mobile.yml'
       - 'package.json'
       - 'yarn.lock'
-
-env:
-  NODE_VERSION: '20.x'
+      - '.github/workflows/mobile.yml'
 
 jobs:
-  setup:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.node-version'
       - name: Enable Corepack
         run: corepack enable
       - name: Cache yarn dependencies
@@ -41,70 +38,18 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --immutable
-
-  lint-and-format:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Cache yarn dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Build packages
+        run: |
+          yarn workspace @template/eslint-config build
+          yarn workspace @template/shared-lib build
       - name: Run ESLint
-        working-directory: apps/mobile
-        run: yarn lint
+        run: yarn workspace @template/mobile lint
       - name: Check Prettier formatting
-        working-directory: apps/mobile
-        run: yarn format:check
-
-  test:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Cache yarn dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn workspace @template/mobile format:check
       - name: Run tests
-        working-directory: apps/mobile
-        run: yarn test --reporter=verbose --coverage
+        run: yarn workspace @template/mobile test --reporter=verbose --coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           directory: apps/mobile/coverage
           flags: mobile
-
-  success:
-    runs-on: ubuntu-latest
-    needs: [lint-and-format, test]
-    if: always()
-    steps:
-      - name: Check all jobs status
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
-      - name: All checks passed
-        run: echo "✅ Mobile CI checks passed successfully!"
