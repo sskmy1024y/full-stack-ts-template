@@ -1,0 +1,137 @@
+name: Server CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/server/**'
+      - 'packages/**'
+      - '.github/workflows/server.yml'
+      - 'package.json'
+      - 'yarn.lock'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/server/**'
+      - 'packages/**'
+      - '.github/workflows/server.yml'
+      - 'package.json'
+      - 'yarn.lock'
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      yarn-cache-dir: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --immutable
+
+  lint-and-format:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.yarn-cache-dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build eslint-config
+        run: cd packages/eslint-config && yarn build
+      - name: Run ESLint
+        working-directory: apps/server
+        run: yarn lint
+      - name: Check Prettier formatting
+        working-directory: apps/server
+        run: yarn format:check
+
+  typecheck:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.yarn-cache-dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build eslint-config
+        run: cd packages/eslint-config && yarn build
+      - name: Run TypeScript type checking
+        working-directory: apps/server
+        run: yarn type-check
+
+  test:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.yarn-cache-dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build eslint-config
+        run: cd packages/eslint-config && yarn build
+      - name: Run tests
+        working-directory: apps/server
+        run: yarn test --reporter=verbose --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: apps/server/coverage
+          flags: server
+
+  success:
+    runs-on: ubuntu-latest
+    needs: [lint-and-format, typecheck, test]
+    if: always()
+    steps:
+      - name: Check all jobs status
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+      - name: All checks passed
+        run: echo "✅ Server CI checks passed successfully!"

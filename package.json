@@ -16,7 +16,14 @@
     "db:generate": "yarn workspace @template/database db:generate",
     "db:migrate": "yarn workspace @template/database db:migrate",
     "db:studio": "yarn workspace @template/database db:studio",
-    "db:reset": "yarn workspace @template/database db:reset"
+    "db:reset": "yarn workspace @template/database db:reset",
+    "test": "yarn workspaces foreach -A run test --run",
+    "format": "yarn workspaces foreach -A run format",
+    "format:check": "yarn workspaces foreach -A run format:check",
+    "ci:lint": "yarn workspaces foreach -A -p run lint",
+    "ci:test": "yarn workspaces foreach -A -p run test --run",
+    "ci:format": "yarn workspaces foreach -A -p run format:check",
+    "ci:type-check": "yarn workspaces foreach -A -p run type-check"
   },
   "devDependencies": {
     "concurrently": "9.1.0",
