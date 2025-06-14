@@ -1,201 +1,201 @@
 # Full-Stack TypeScript Template
 
-モノレポ構成のfull-stack TypeScriptテンプレート。Fastify + tRPC + Next.js + React Native/Expoによる型安全な開発環境を提供します。
+A monorepo full-stack TypeScript template providing a type-safe development environment with Fastify + tRPC + Next.js + React Native/Expo.
 
-## 🚀 技術スタック
+## 🚀 Tech Stack
 
-### 共通
+### Common
 - **TypeScript**: 5.7.2
 - **Node.js**: 22.12.0 LTS
-- **Yarn Workspaces**: モノレポ管理
+- **Yarn Workspaces**: Monorepo management
 - **ESLint**: 9.17.0 (flat config)
 
-### バックエンド
-- **Fastify**: 5.3.3 (高性能Webフレームワーク)
-- **tRPC**: 11.x (型安全API)
+### Backend
+- **Fastify**: 5.3.3 (high-performance web framework)
+- **tRPC**: 11.x (type-safe API)
 - **Prisma**: 6.8.2 (ORM)
-- **PostgreSQL**: 16 (データベース)
-- **Zod**: バリデーション
+- **PostgreSQL**: 16 (database)
+- **Zod**: validation
 
-### フロントエンド
+### Frontend
 - **Next.js**: 15.x (App Router)
 - **React**: 19.1.0
-- **TanStack Query**: データフェッチング
-- **Tailwind CSS**: スタイリング
+- **TanStack Query**: data fetching
+- **Tailwind CSS**: styling
 
-### モバイル
-- **React Native**: 最新版
-- **Expo**: 最新版
-- **tRPC**: フロントエンドと共通
+### Mobile
+- **React Native**: latest
+- **Expo**: latest
+- **tRPC**: shared with frontend
 
-## 📁 プロジェクト構造
+## 📁 Project Structure
 
 ```
 full-stack-ts-template/
 ├── apps/
-│   ├── server/                 # バックエンドAPI (Fastify + tRPC)
-│   ├── frontend/               # フロントエンドアプリ (Next.js)
-│   └── mobile/                 # モバイルアプリ (React Native/Expo)
+│   ├── server/                 # Backend API (Fastify + tRPC)
+│   ├── frontend/               # Frontend app (Next.js)
+│   └── mobile/                 # Mobile app (React Native/Expo)
 ├── packages/
-│   ├── shared-lib/             # 共通ライブラリ (型定義、ユーティリティ等)
-│   ├── tsconfig/               # 共通TypeScript設定
-│   ├── eslint-config/          # 共通ESLint設定
-│   └── database/               # Prismaスキーマとマイグレーション
-├── docker-compose.yml          # データベース環境
-└── package.json                # ワークスペース設定
+│   ├── shared-lib/             # Shared library (types, utilities, etc.)
+│   ├── tsconfig/               # Shared TypeScript config
+│   ├── eslint-config/          # Shared ESLint config
+│   └── database/               # Prisma schema and migrations
+├── docker-compose.yml          # Database environment
+└── package.json                # Workspace configuration
 ```
 
-## 🛠️ セットアップ
+## 🛠️ Setup
 
-### 1. 依存関係のインストール
+### 1. Install Dependencies
 
 ```bash
 yarn install
 ```
 
-### 2. 環境変数の設定
+### 2. Environment Variables
 
 ```bash
 cp .env.example .env
 ```
 
-必要に応じて `.env` ファイルの値を編集してください。
+Edit the `.env` file values as needed.
 
-### 3. データベースの起動
+### 3. Start Database
 
 ```bash
 docker-compose up -d
 ```
 
-### 4. データベースの初期化
+### 4. Initialize Database
 
 ```bash
-# Prisma クライアント生成
+# Generate Prisma client
 yarn db:generate
 
-# マイグレーション実行
+# Run migrations
 yarn db:migrate
 
-# シードデータ投入 (オプション)
+# Seed data (optional)
 yarn workspace @template/database db:seed
 ```
 
-### 5. 開発サーバーの起動
+### 5. Start Development Servers
 
 ```bash
-# 全アプリケーションを並列起動
+# Start all applications in parallel
 yarn dev
 
-# または個別起動
-yarn workspace @template/server dev      # バックエンド (port 3001)
-yarn workspace @template/frontend dev    # フロントエンド (port 3000)
-yarn workspace @template/mobile dev      # モバイル
+# Or start individually
+yarn workspace @template/server dev      # Backend (port 3001)
+yarn workspace @template/frontend dev    # Frontend (port 3000)
+yarn workspace @template/mobile dev      # Mobile
 ```
 
-## 📱 アプリケーション
+## 📱 Applications
 
-### バックエンド (apps/server)
+### Backend (apps/server)
 - **URL**: http://localhost:3001
 - **tRPC Playground**: http://localhost:3001/trpc-playground
-- **DDD アーキテクチャ**: Domain, Application, Infrastructure, Presentation層
+- **DDD Architecture**: Domain, Application, Infrastructure, Presentation layers
 
-### フロントエンド (apps/frontend)
+### Frontend (apps/frontend)
 - **URL**: http://localhost:3000
 - **Next.js App Router**: Server Components + Client Components
-- **型安全なAPI呼び出し**: tRPCクライアント
+- **Type-safe API calls**: tRPC client
 
-### モバイル (apps/mobile)
-- **Expo Dev Tools**: 開発サーバー起動後に表示されるURL
-- **プラットフォーム**: iOS, Android, Web対応
+### Mobile (apps/mobile)
+- **Expo Dev Tools**: URL displayed after starting dev server
+- **Platforms**: iOS, Android, Web support
 
-## 🔧 開発コマンド
+## 🔧 Development Commands
 
 ```bash
-# 開発
-yarn dev                    # 全アプリケーション並列起動
-yarn workspace <name> dev   # 個別アプリケーション起動
+# Development
+yarn dev                    # Start all applications in parallel
+yarn workspace <name> dev   # Start individual application
 
-# ビルド
-yarn build                  # 全プロジェクトビルド
-yarn workspace <name> build # 個別プロジェクトビルド
+# Build
+yarn build                  # Build all projects
+yarn workspace <name> build # Build individual project
 
-# リント・型チェック
-yarn lint                   # 全プロジェクトlint
-yarn type-check            # 全プロジェクト型チェック
+# Lint & Type check
+yarn lint                   # Lint all projects
+yarn type-check            # Type check all projects
 
-# データベース
-yarn db:generate           # Prisma クライアント生成
-yarn db:migrate            # マイグレーション実行
-yarn db:studio             # Prisma Studio起動
-yarn db:reset              # データベースリセット
+# Database
+yarn db:generate           # Generate Prisma client
+yarn db:migrate            # Run migrations
+yarn db:studio             # Start Prisma Studio
+yarn db:reset              # Reset database
 
-# クリーンアップ
-yarn clean                 # ビルド成果物削除
+# Cleanup
+yarn clean                 # Remove build artifacts
 ```
 
-## 🏗️ アーキテクチャ
+## 🏗️ Architecture
 
-### サーバーアーキテクチャ (DDD)
+### Server Architecture (DDD)
 ```
 apps/server/src/
-├── application/     # ユースケース・アプリケーションサービス
-├── domain/          # ドメインモデル・リポジトリインターフェース
-├── infrastructure/  # 外部システム統合・Prisma実装
-├── presentation/    # DTO・コントローラー
-└── main.ts         # エントリーポイント
+├── application/     # Use cases & application services
+├── domain/          # Domain models & repository interfaces
+├── infrastructure/  # External system integration & Prisma implementation
+├── presentation/    # DTOs & controllers
+└── main.ts         # Entry point
 ```
 
-### 型安全性
-- フロントエンドからバックエンドまで完全な型安全性
-- tRPCによるAPI型推論
-- Zodによるバリデーション
-- 共通ライブラリによる型定義共有
+### Type Safety
+- Complete type safety from frontend to backend
+- API type inference with tRPC
+- Validation with Zod
+- Shared type definitions via common library
 
-## 🔐 認証
+## 🔐 Authentication
 
-基本的なJWT認証システムを実装済み：
-- ユーザー登録・ログイン
-- JWTトークンベース認証
-- パスワードハッシュ化
+Basic JWT authentication system implemented:
+- User registration & login
+- JWT token-based authentication
+- Password hashing
 
-## 🧪 テスト
+## 🧪 Testing
 
 ```bash
-# テストの実行 (実装予定)
+# Run tests (planned implementation)
 yarn test
 yarn workspace <name> test
 ```
 
-## 🚀 デプロイ
+## 🚀 Deployment
 
-### 本番環境変数
-本番環境では以下の環境変数を適切に設定してください：
-- `DATABASE_URL`: 本番データベースURL
-- `JWT_SECRET`: 強力なJWTシークレット
+### Production Environment Variables
+Set the following environment variables appropriately in production:
+- `DATABASE_URL`: Production database URL
+- `JWT_SECRET`: Strong JWT secret
 - `NODE_ENV`: "production"
 
-### プラットフォーム例
-- **Vercel**: フロントエンド
-- **Railway/Render**: バックエンド
-- **Expo EAS**: モバイルアプリ
+### Platform Examples
+- **Vercel**: Frontend
+- **Railway/Render**: Backend
+- **Expo EAS**: Mobile app
 
-## 📝 今後の拡張
+## 📝 Future Enhancements
 
-- [ ] 自動テスト (Jest, Playwright)
-- [ ] OAuth認証 (Google, GitHub)
-- [ ] リアルタイム機能 (WebSocket)
-- [ ] ファイルアップロード
+- [ ] Automated testing (Jest, Playwright)
+- [ ] OAuth authentication (Google, GitHub)
+- [ ] Real-time features (WebSocket)
+- [ ] File upload
 - [ ] CI/CD (GitHub Actions)
-- [ ] 監視・ロギング
+- [ ] Monitoring & logging
 
-## 🤝 コントリビューション
+## 🤝 Contributing
 
-1. フォークする
-2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-feature`)
-3. コミット (`git commit -m 'Add amazing feature'`)
-4. プッシュ (`git push origin feature/amazing-feature`)
-5. Pull Requestを作成
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
 
-## 📄 ライセンス
+## 📄 License
 
 MIT License
