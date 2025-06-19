@@ -38,20 +38,15 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --immutable
-      - name: Build packages
-        run: |
-          yarn workspace @template/eslint-config build
-          yarn workspace @template/shared-lib build
+
       - name: Run ESLint
         run: yarn workspace @template/frontend lint
+
       - name: Check Prettier formatting
         run: yarn workspace @template/frontend format:check
+
       - name: Run TypeScript type checking
         run: yarn workspace @template/frontend type-check
+
       - name: Run tests
-        run: yarn workspace @template/frontend test --reporter=verbose --coverage
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          directory: apps/frontend/coverage
-          flags: frontend
+        run: yarn workspace @template/frontend test

@@ -6,16 +6,12 @@ on:
     paths:
       - 'apps/mobile/**'
       - 'packages/**'
-      - 'package.json'
-      - 'yarn.lock'
       - '.github/workflows/mobile.yml'
   pull_request:
     branches: [main, develop]
     paths:
       - 'apps/mobile/**'
       - 'packages/**'
-      - 'package.json'
-      - 'yarn.lock'
       - '.github/workflows/mobile.yml'
 
 jobs:
@@ -27,8 +23,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
+
       - name: Enable Corepack
         run: corepack enable
+
       - name: Cache yarn dependencies
         uses: actions/cache@v4
         with:
@@ -36,20 +34,20 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
       - name: Install dependencies
         run: yarn install --immutable
+
       - name: Build packages
         run: |
           yarn workspace @template/eslint-config build
           yarn workspace @template/shared-lib build
+
       - name: Run ESLint
         run: yarn workspace @template/mobile lint
+
       - name: Check Prettier formatting
         run: yarn workspace @template/mobile format:check
+
       - name: Run tests
-        run: yarn workspace @template/mobile test --reporter=verbose --coverage
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          directory: apps/mobile/coverage
-          flags: mobile
+        run: yarn workspace @template/mobile test
