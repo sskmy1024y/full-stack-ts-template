@@ -33,7 +33,7 @@ const errorHandler = middleware(async ({ next }) => {
   }
 })
 
-function getHTTPStatusCodeFromError(error: AppError): any {
+function getHTTPStatusCodeFromError(error: AppError) {
   switch (error.statusCode) {
     case 400:
       return 'BAD_REQUEST'

@@ -2,6 +2,7 @@ import { newUser, type User } from '../model/user.js'
 import type { DaoRwContext } from '../../lib/context/DaoContext.js'
 import { Prisma } from '@prisma/client'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const userArgs = Prisma.validator<Prisma.UserDefaultArgs>()({})
 
 type DTO = Prisma.UserGetPayload<typeof userArgs>

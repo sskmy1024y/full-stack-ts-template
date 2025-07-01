@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { z } from 'zod'
 
 const envSchema = z

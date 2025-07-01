@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "yarn db:generate",
     "dev": "concurrently \"yarn workspace @template/server dev\" \"yarn workspace @template/frontend dev\"",
     "build": "yarn workspaces foreach -A run build",
     "lint": "yarn workspaces foreach -A run lint",
